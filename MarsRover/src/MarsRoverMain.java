@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import robot.Rover;
@@ -13,7 +15,11 @@ public class MarsRoverMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		List<Rover> rovers = new ArrayList<Rover>();
 		Scanner scanner = new Scanner(System.in);
+		int xRover = 0;
+		Rover rover;
+		String command = "";
 		/*
 		MarsGround plateau = new Plateau(new Cartesian(5, 5));
 		Rover rover = new Rover(plateau, new Cartesian(3, 3), Direction.E);
@@ -22,26 +28,62 @@ public class MarsRoverMain {
 		System.out.println(rover.coordinatesToString());
 		*/
 		
-		System.out.println("Foneça as coordenadas do canto superior direito do Plateau (x, y)");
+		
 		int xPlateau = scanner.nextInt();
 		int yPlateau = scanner.nextInt();
 		MarsGround plateau = new Plateau(new Cartesian(xPlateau, yPlateau));
 		
-		System.out.println("Forneça as coordenadas da localização atual do rover (x, y) e a direção para a qual ele está virado");
-		int xRover = scanner.nextInt();
-		int yRover = scanner.nextInt();
-		String direction = scanner.next();
-		Rover rover = new Rover(plateau, new Cartesian(xRover, yRover), Direction.valueOf(direction.toUpperCase()));
+		while(true){
+			try{
+				
+				xRover = scanner.nextInt();
+				
+				if(xRover == -1) break;
+				
+				int yRover = scanner.nextInt();
+				String direction = scanner.next();
+				rover = new Rover(plateau, new Cartesian(xRover, yRover), Direction.valueOf(direction.toUpperCase()));
+				
+				if(!rover.validateRoverCartesianCoordinates(xRover, yRover)){
+					System.out.println("Forneça as coordenadas corretas\n");
+					continue;
+				}
+				
+				
+				while(true){
+					command = scanner.next();
+					
+					if(rover.validateCommand(command)){
+						rover.runCommand(command);
+						rovers.add(rover);
+						break;
+					}else{
+						System.out.println("O comando inserido é inválido. Insira outra sequencia de comandos");
+					}
+				}
+				
+				System.out.println("Exibir localização dos rovers?\n"
+						+"s - exibe as coordenadas de todos os rovers adicionados e finaliza o programa;\n"
+						+"n - inserir novo rover.");
+				String yesOrNo = scanner.next();
+				if(yesOrNo.equalsIgnoreCase("s")){
+					break;
+				}
+				
+				
+				
+			}catch(Exception ex){
+				System.out.println("Forneça as coordenadas corretas\n");
+			}		
+		}
 		
-		System.out.println("Forneça a sequência de comandos (M - mover para frente, R - virar a direita, L - virar para a esquerda");
-		String command = scanner.next();
-		
-		
-		rover.runCommand(command);
-		System.out.println(rover.coordinatesToString());
-		
-		
-
+		if(rovers.isEmpty()){
+			System.out.println("Aplicação encerrada");
+			System.exit(0);
+		}else{
+			for(Rover r : rovers){
+				System.out.println(r.coordinatesToString());
+			}
+		}
 	}
-
 }

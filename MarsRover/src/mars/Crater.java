@@ -1,5 +1,7 @@
 package mars;
 
+import robot.Rover;
+
 public class Crater implements MarsGround{
 
 	private int radius;
@@ -15,6 +17,6 @@ public class Crater implements MarsGround{
 
 	public void setRadius(int radius) {
 		this.radius = radius;
-	}	
+	}		
 	
 }

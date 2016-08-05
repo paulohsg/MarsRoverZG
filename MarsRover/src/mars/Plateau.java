@@ -18,17 +18,6 @@ public class Plateau implements MarsGround{
 
 	public void setUpperRightCoordinates(Coordinates upperRightCoordinates) {
 		this.upperRightCoordinates = upperRightCoordinates;
-	}
-
-	@Override
-	public boolean isOutOfBounds(Rover rover) {
-		
-		Cartesian roverCoordinates = (Cartesian) rover.getCoordinates();
-		
-		
-		return false;
-	}
-
-	
+	}	
 
 }
